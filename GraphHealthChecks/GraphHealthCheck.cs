@@ -13,14 +13,14 @@ public record GraphHealthCheck : IHealthCheck
 
     private readonly IRequestExecutorResolver _requestExecutorResolver;
     private readonly ILogger<GraphHealthCheck>? _logger;
-    private readonly Action<string>? _loggerFn;
+    private readonly ILogFn? _loggerFn;
 
     private const string _message = $"[{nameof(GraphHealthChecks)}] An error has occurred with message: {{message}}";
 
     public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver, ILogger<GraphHealthCheck> logger) =>
         (_requestExecutorResolver, _logger) = (requestExecutorResolver, logger);
 
-    public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver, Action<string> loggerFn) =>
+    public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver, ILogFn loggerFn) =>
         (_requestExecutorResolver, _loggerFn) = (requestExecutorResolver, loggerFn);
 
     public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver) =>
@@ -31,7 +31,7 @@ public record GraphHealthCheck : IHealthCheck
         if (_logger is { } logger)
             logger.LogError(ex, _message, ex.Message);
         else if (_loggerFn is { } loggerFn)
-            _loggerFn(_message.Replace("{message}", ex.Message));
+            _loggerFn.LogError(_message.Replace("{message}", ex.Message));
     }
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)

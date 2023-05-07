@@ -8,12 +8,27 @@ namespace GraphHealthChecks;
 
 public static class GraphHealthChecksFactories
 {
-    public static IHealthCheck GraphHealthCheckFactoryWithILogger(IServiceProvider sp) =>
-        new GraphHealthCheck(sp.GetRequiredService<IRequestExecutorResolver>(), sp.GetRequiredService<ILogger<GraphHealthCheck>>());
+    public static Func<IServiceProvider, IHealthCheck> GraphHealthCheckFactoryWithILogger(string? schemaName = default) => (IServiceProvider sp) =>
+        new GraphHealthCheck(
+            sp.GetRequiredService<IRequestExecutorResolver>(),
+            sp.GetRequiredService<ILogger<GraphHealthCheck>>()
+        )
+        {
+            Schema = schemaName
+        };
 
-    public static IHealthCheck GraphHealthCheckFactoryWithLoggerFn(IServiceProvider sp) =>
-        new GraphHealthCheck(sp.GetRequiredService<IRequestExecutorResolver>(), sp.GetRequiredService<Action<string>>());
+    public static Func<IServiceProvider, IHealthCheck> GraphHealthCheckFactoryWithLoggerFn(string? schemaName = default) => (IServiceProvider sp) =>
+        new GraphHealthCheck(
+            sp.GetRequiredService<IRequestExecutorResolver>(),
+            sp.GetRequiredService<ILogFn>()
+        )
+        {
+            Schema = schemaName
+        };
 
-    public static IHealthCheck GraphHealthCheckFactory(IServiceProvider sp) =>
-        new GraphHealthCheck(sp.GetRequiredService<IRequestExecutorResolver>());
+    public static Func<IServiceProvider, IHealthCheck> GraphHealthCheckFactoryWithNoLogger(string? schemaName = default) => (IServiceProvider sp) =>
+        new GraphHealthCheck(sp.GetRequiredService<IRequestExecutorResolver>())
+        {
+            Schema = schemaName
+        };
 }
