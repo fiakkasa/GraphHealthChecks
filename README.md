@@ -1,8 +1,14 @@
 # GraphHealthChecks
 
-Graph Health Checks for HotChocolate
+[![NuGet Version](https://img.shields.io/nuget/v/GraphHealthChecks)](https://www.nuget.org/packages/GraphHealthChecks)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/GraphHealthChecks)](https://www.nuget.org/packages/GraphHealthChecks)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/fiakkasa/GraphHealthChecks/blob/master/LICENSE)
+
+Graph Health Checks for HotChocolate.
 
 The purpose of this middleware is to provide feedback in regards to the health of the schema.
+
+[Nuget](https://www.nuget.org/packages/GraphHealthChecks/)
 
 ## Usage
 
