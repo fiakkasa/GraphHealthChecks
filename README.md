@@ -40,6 +40,8 @@ If separate schemas are present, multiple registrations can be done for each sch
 
 ex.
 
+ex.
+
 ```csharp
 // Startup.cs
 public void ConfigureServices(IServiceCollection services)

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HotChocolate;
 using HotChocolate.Execution;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
@@ -16,6 +18,8 @@ public record GraphHealthCheck : IHealthCheck
     private readonly ILogFn? _loggerFn;
 
     private const string _message = $"[{nameof(GraphHealthChecks)}] An error has occurred with message: {{message}}";
+    private const string _generalSchemaError = "The schema cannot be resolved.";
+    private const string _generalError = "A general error has occurred.";
 
     public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver, ILogger<GraphHealthCheck> logger) =>
         (_requestExecutorResolver, _logger) = (requestExecutorResolver, logger);
@@ -47,10 +51,17 @@ public record GraphHealthCheck : IHealthCheck
 
             return new HealthCheckResult(HealthStatus.Healthy);
         }
+        catch (SchemaException ex)
+        {
+            Log(ex);
+
+            return new HealthCheckResult(HealthStatus.Unhealthy, _generalSchemaError, ex);
+        }
         catch (Exception ex)
         {
             Log(ex);
-            return new HealthCheckResult(HealthStatus.Unhealthy);
+
+            return new HealthCheckResult(HealthStatus.Unhealthy, _generalError, ex);
         }
     }
 }
