@@ -9,6 +9,36 @@ public class GraphHealthChecksFactoriesTests
         public string Name => "Hello";
     }
 
+    [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryWithNoLogger - Custom Schema")]
+    public void GraphHealthCheckFactoryWithNoLoggerCustomSchema()
+    {
+        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryWithNoLogger("schema")(
+            new ServiceCollection()
+                .AddGraphQLServer()
+                .AddQueryType<Query>()
+                .Services
+                .BuildServiceProvider()
+        );
+
+        Assert.IsAssignableFrom<GraphHealthCheck>(result);
+        Assert.Equal("schema", (result as GraphHealthCheck)?.Schema);
+    }
+
+    [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryWithNoLogger - Default Schema")]
+    public void GraphHealthCheckFactoryWithNoLoggerDefaultSchema()
+    {
+        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryWithNoLogger()(
+            new ServiceCollection()
+                .AddGraphQLServer()
+                .AddQueryType<Query>()
+                .Services
+                .BuildServiceProvider()
+        );
+
+        Assert.IsAssignableFrom<GraphHealthCheck>(result);
+        Assert.Null((result as GraphHealthCheck)?.Schema);
+    }
+
     [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryWithILogger - Custom Schema")]
     public void GraphHealthCheckFactoryWithILoggerCustomSchema()
     {
@@ -44,9 +74,9 @@ public class GraphHealthChecksFactoriesTests
     [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryWithLoggerFn - Custom Schema")]
     public void GraphHealthCheckFactoryWithLoggerFnCustomSchema()
     {
-        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryWithLoggerFn("schema")(
+        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryWithILoggerFactory("schema")(
             new ServiceCollection()
-                .AddSingleton(new Mock<ILogFn>().Object)
+                .AddLogging()
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
                 .Services
@@ -60,41 +90,9 @@ public class GraphHealthChecksFactoriesTests
     [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryWithLoggerFn - Default Schema")]
     public void GraphHealthCheckFactoryWithLoggerFnDefaultSchema()
     {
-        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryWithLoggerFn()(
+        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryWithILoggerFactory()(
             new ServiceCollection()
-                .AddSingleton(new Mock<ILogFn>().Object)
-                .AddGraphQLServer()
-                .AddQueryType<Query>()
-                .Services
-                .BuildServiceProvider()
-        );
-
-        Assert.IsAssignableFrom<GraphHealthCheck>(result);
-        Assert.Null((result as GraphHealthCheck)?.Schema);
-    }
-
-    [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryWithNoLogger - Custom Schema")]
-    public void GraphHealthCheckFactoryWithNoLoggerCustomSchema()
-    {
-        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryWithNoLogger("schema")(
-            new ServiceCollection()
-                .AddSingleton(new Mock<ILogFn>().Object)
-                .AddGraphQLServer()
-                .AddQueryType<Query>()
-                .Services
-                .BuildServiceProvider()
-        );
-
-        Assert.IsAssignableFrom<GraphHealthCheck>(result);
-        Assert.Equal("schema", (result as GraphHealthCheck)?.Schema);
-    }
-
-    [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryWithNoLogger - Default Schema")]
-    public void GraphHealthCheckFactoryWithNoLoggerDefaultSchema()
-    {
-        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryWithNoLogger()(
-            new ServiceCollection()
-                .AddSingleton(new Mock<ILogFn>().Object)
+                .AddLogging()
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
                 .Services

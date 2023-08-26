@@ -45,8 +45,8 @@ public static class GraphHealthExtensions
             )
         );
 
-    public static IHealthChecksBuilder AddGraphHealthWithLoggerFn(
-        this IHealthChecksBuilder builder,
+    public static IHealthChecksBuilder AddGraphHealthWithILoggerFactory(
+         this IHealthChecksBuilder builder,
         string healthName = _defaultHealthName,
         string? schemaName = default,
         HealthStatus? failureStatus = default,
@@ -56,7 +56,7 @@ public static class GraphHealthExtensions
         builder.Add(
             new(
                 healthName,
-                GraphHealthChecksFactories.GraphHealthCheckFactoryWithLoggerFn(schemaName),
+                GraphHealthChecksFactories.GraphHealthCheckFactoryWithILoggerFactory(schemaName),
                 failureStatus,
                 tags,
                 timeout

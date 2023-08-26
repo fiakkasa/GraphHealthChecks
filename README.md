@@ -16,7 +16,7 @@ Locate the services registration and append one of:
 
 - `.AddGraphHealthWithNoLogger` - use when no logging is required
 - `.AddGraphHealthWithILogger` - use when the ILogger provider is available
-- `.AddGraphHealthWithLoggerFn` - use when a custom logger is required, in which case the `ILogFn` interface will need to be implemented and present in the DI.
+- `.AddGraphHealthWithILoggerFactory` - use when the ILoggerFactory provider is available
 
 ⚠️ Bear in mind that `IHealthChecksBuilder` needs to be appended before any of the aforementioned.
 
@@ -37,8 +37,6 @@ public void ConfigureServices(IServiceCollection services)
 📝 If further customization is required, consider wiring up any of the factories manually or use the `GraphHealthCheck` class itself as required.
 
 If separate schemas are present, multiple registrations can be done for each schema.
-
-ex.
 
 ex.
 

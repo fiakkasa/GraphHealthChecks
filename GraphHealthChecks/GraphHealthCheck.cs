@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
@@ -15,7 +14,6 @@ public record GraphHealthCheck : IHealthCheck
 
     private readonly IRequestExecutorResolver _requestExecutorResolver;
     private readonly ILogger<GraphHealthCheck>? _logger;
-    private readonly ILogFn? _loggerFn;
 
     private const string _message = $"[{nameof(GraphHealthChecks)}] An error has occurred with message: {{message}}";
     private const string _generalSchemaError = "The schema cannot be resolved.";
@@ -24,19 +22,8 @@ public record GraphHealthCheck : IHealthCheck
     public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver, ILogger<GraphHealthCheck> logger) =>
         (_requestExecutorResolver, _logger) = (requestExecutorResolver, logger);
 
-    public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver, ILogFn loggerFn) =>
-        (_requestExecutorResolver, _loggerFn) = (requestExecutorResolver, loggerFn);
-
     public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver) =>
         _requestExecutorResolver = requestExecutorResolver;
-
-    private void Log(Exception ex)
-    {
-        if (_logger is { } logger)
-            logger.LogError(ex, _message, ex.Message);
-        else if (_loggerFn is { } loggerFn)
-            _loggerFn.LogError(_message.Replace("{message}", ex.Message));
-    }
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
@@ -53,13 +40,13 @@ public record GraphHealthCheck : IHealthCheck
         }
         catch (SchemaException ex)
         {
-            Log(ex);
+            _logger?.LogError(ex, _message, ex.Message);
 
             return new HealthCheckResult(HealthStatus.Unhealthy, _generalSchemaError, ex);
         }
         catch (Exception ex)
         {
-            Log(ex);
+            _logger?.LogError(ex, _message, ex.Message);
 
             return new HealthCheckResult(HealthStatus.Unhealthy, _generalError, ex);
         }

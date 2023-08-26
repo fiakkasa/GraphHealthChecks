@@ -12,14 +12,13 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddLogging()
-                .AddSingleton(new Mock<ILogFn>().Object)
                 .AddHealthChecks()
                 .AddGraphHealthWithNoLogger(healthName: "health1", schemaName: "schema1")
                 .AddGraphHealthWithNoLogger(healthName: "health2", schemaName: "schema2")
                 .AddGraphHealthWithILogger(healthName: "health3", schemaName: "schema3")
                 .AddGraphHealthWithILogger(healthName: "health4", schemaName: "schema4")
-                .AddGraphHealthWithLoggerFn(healthName: "health5", schemaName: "schema5")
-                .AddGraphHealthWithLoggerFn(healthName: "health6", schemaName: "schema6")
+                .AddGraphHealthWithILoggerFactory(healthName: "health5", schemaName: "schema5")
+                .AddGraphHealthWithILoggerFactory(healthName: "health6", schemaName: "schema6")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -48,14 +47,14 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddLogging()
-                .AddSingleton(new Mock<ILogFn>().Object)
+
                 .AddHealthChecks()
                 .AddGraphHealthWithNoLogger(healthName: "health1", schemaName: "schema")
                 .AddGraphHealthWithNoLogger(healthName: "health2", schemaName: "schema")
                 .AddGraphHealthWithILogger(healthName: "health3", schemaName: "schema")
                 .AddGraphHealthWithILogger(healthName: "health4", schemaName: "schema")
-                .AddGraphHealthWithLoggerFn(healthName: "health5", schemaName: "schema")
-                .AddGraphHealthWithLoggerFn(healthName: "health6", schemaName: "schema")
+                .AddGraphHealthWithILoggerFactory(healthName: "health5", schemaName: "schema")
+                .AddGraphHealthWithILoggerFactory(healthName: "health6", schemaName: "schema")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -84,14 +83,14 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddLogging()
-                .AddSingleton(new Mock<ILogFn>().Object)
+
                 .AddHealthChecks()
                 .AddGraphHealthWithNoLogger(healthName: "health1")
                 .AddGraphHealthWithNoLogger(healthName: "health2")
                 .AddGraphHealthWithILogger(healthName: "health3")
                 .AddGraphHealthWithILogger(healthName: "health4")
-                .AddGraphHealthWithLoggerFn(healthName: "health5")
-                .AddGraphHealthWithLoggerFn(healthName: "health6")
+                .AddGraphHealthWithILoggerFactory(healthName: "health5")
+                .AddGraphHealthWithILoggerFactory(healthName: "health6")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -120,14 +119,14 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddLogging()
-                .AddSingleton(new Mock<ILogFn>().Object)
+
                 .AddHealthChecks()
                 .AddGraphHealthWithNoLogger(healthName: "health")
                 .AddGraphHealthWithNoLogger(healthName: "health")
                 .AddGraphHealthWithILogger(healthName: "health")
                 .AddGraphHealthWithILogger(healthName: "health")
-                .AddGraphHealthWithLoggerFn(healthName: "health")
-                .AddGraphHealthWithLoggerFn(healthName: "health")
+                .AddGraphHealthWithILoggerFactory(healthName: "health")
+                .AddGraphHealthWithILoggerFactory(healthName: "health")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -148,14 +147,14 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddLogging()
-                .AddSingleton(new Mock<ILogFn>().Object)
+
                 .AddHealthChecks()
                 .AddGraphHealthWithNoLogger()
                 .AddGraphHealthWithNoLogger()
                 .AddGraphHealthWithILogger()
                 .AddGraphHealthWithILogger()
-                .AddGraphHealthWithLoggerFn()
-                .AddGraphHealthWithLoggerFn()
+                .AddGraphHealthWithILoggerFactory()
+                .AddGraphHealthWithILoggerFactory()
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -256,14 +255,14 @@ public class GraphHealthExtensionsTests
         );
     }
 
-    [Fact(DisplayName = "AddGraphHealthWithLoggerFn - Default Health Name")]
-    public void AddGraphHealthWithLoggerFnDefaultHealthName()
+    [Fact(DisplayName = "AddGraphHealthWithILoggerFactory - Default Health Name")]
+    public void AddGraphHealthWithILoggerFactoryDefaultHealthName()
     {
         var options =
             new ServiceCollection()
-                .AddSingleton(new Mock<ILogFn>())
+                .AddLogging()
                 .AddHealthChecks()
-                .AddGraphHealthWithLoggerFn()
+                .AddGraphHealthWithILoggerFactory()
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -278,14 +277,14 @@ public class GraphHealthExtensionsTests
         );
     }
 
-    [Fact(DisplayName = "AddGraphHealthWithLoggerFn - Custom Health Name")]
-    public void AddGraphHealthWithLoggerFnCustomHealthName()
+    [Fact(DisplayName = "AddGraphHealthWithILoggerFactory - Custom Health Name")]
+    public void AddGraphHealthWithILoggerFactoryCustomHealthName()
     {
         var options =
             new ServiceCollection()
-                .AddSingleton(new Mock<ILogFn>())
+                .AddLogging()
                 .AddHealthChecks()
-                .AddGraphHealthWithLoggerFn(healthName: "Graph")
+                .AddGraphHealthWithILoggerFactory(healthName: "Graph")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()

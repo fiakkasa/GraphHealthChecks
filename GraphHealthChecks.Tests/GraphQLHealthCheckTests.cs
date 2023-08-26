@@ -1,5 +1,5 @@
-﻿using System.Net;
-using System.Text;
+﻿using System.Threading;
+using System.Net;
 using HotChocolate.Authorization;
 using HotChocolate.Execution;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,26 +23,36 @@ public class GraphQLHealthCheckTests
     }
 
     [Fact(DisplayName = "GraphQLHealthCheck - No Logger - Unhealthy Schema")]
-    public async Task UnhealthySchemaNoLogger()
+    public async Task NoLoggerUnhealthySchema()
     {
-        var result = await new GraphHealthCheck(
-            new ServiceCollection()
-                .AddGraphQLServer()
-                .AddQueryType()
-                .Services
-                .BuildServiceProvider()
-                .GetRequiredService<IRequestExecutorResolver>()
-        )
-        .CheckHealthAsync(null!);
+        var mockRequestExecutorResolver = new Mock<IRequestExecutorResolver>();
+        mockRequestExecutorResolver
+            .Setup(m => m.GetRequestExecutorAsync(It.IsAny<string?>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new SchemaException());
+
+        var result = await new GraphHealthCheck(mockRequestExecutorResolver.Object)
+            .CheckHealthAsync(null!);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
         Assert.IsAssignableFrom<SchemaException>(result.Exception);
-        Assert.NotNull(result.Description);
-        Assert.Contains("schema", result.Description);
+    }
+
+    [Fact(DisplayName = "GraphQLHealthCheck - No Logger - General Error")]
+    public async Task NoLoggerGeneralError()
+    {
+        var mockRequestExecutorResolver = new Mock<IRequestExecutorResolver>();
+        mockRequestExecutorResolver
+            .Setup(m => m.GetRequestExecutorAsync(It.IsAny<string?>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new Exception("Splash!"));
+
+        var result = await new GraphHealthCheck(mockRequestExecutorResolver.Object).CheckHealthAsync(null!);
+
+        Assert.Equal(HealthStatus.Unhealthy, result.Status);
+        Assert.IsAssignableFrom<Exception>(result.Exception);
     }
 
     [Fact(DisplayName = "GraphQLHealthCheck - No Logger - Healthy")]
-    public async Task HealthyNoLogger()
+    public async Task NoLoggerHealthy()
     {
         var result = await new GraphHealthCheck(
             new ServiceCollection()
@@ -59,7 +69,7 @@ public class GraphQLHealthCheckTests
     }
 
     [Fact(DisplayName = "GraphQLHealthCheck - ILogger - General Error")]
-    public async Task GeneralErrorILogger()
+    public async Task ILoggerGeneralError()
     {
         var mockLogger = new Mock<ILogger<GraphHealthCheck>>();
         var mockResolver = new Mock<IRequestExecutorResolver>();
@@ -82,7 +92,7 @@ public class GraphQLHealthCheckTests
     }
 
     [Fact(DisplayName = "GraphQLHealthCheck - ILogger - Unhealthy Schema")]
-    public async Task UnhealthySchemaILogger()
+    public async Task ILoggerUnhealthySchema()
     {
         var mockLogger = new Mock<ILogger<GraphHealthCheck>>();
 
@@ -106,7 +116,7 @@ public class GraphQLHealthCheckTests
     }
 
     [Fact(DisplayName = "GraphQLHealthCheck - ILogger - Unhealthy Stitched Schema - No Registered Http Client")]
-    public async Task UnhealthyStitchedSchemaNoRegisteredHttpClientILogger()
+    public async Task ILoggerUnhealthyStitchedSchemaNoRegisteredHttpClient()
     {
         var mockLogger = new Mock<ILogger<GraphHealthCheck>>();
 
@@ -130,7 +140,7 @@ public class GraphQLHealthCheckTests
     }
 
     [Fact(DisplayName = "GraphQLHealthCheck - ILogger - Unhealthy Stitched Schema - No Registered Http Client For Schema")]
-    public async Task UnhealthyStitchedSchemaNoRegisteredHttpClientForSchemaILogger()
+    public async Task ILoggerUnhealthyStitchedSchemaNoRegisteredHttpClientForSchema()
     {
         var mockLogger = new Mock<ILogger<GraphHealthCheck>>();
 
@@ -155,7 +165,7 @@ public class GraphQLHealthCheckTests
     }
 
     [Fact(DisplayName = "GraphQLHealthCheck - ILogger - Unhealthy Stitched Schema - Http Client Returns Error For Schema")]
-    public async Task UnhealthyStitchedSchemaHttpClientReturnsErrorForSchemaILogger()
+    public async Task ILoggerUnhealthyStitchedSchemaHttpClientReturnsErrorForSchema()
     {
         var mockLogger = new Mock<ILogger<GraphHealthCheck>>();
         var handler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -190,7 +200,7 @@ public class GraphQLHealthCheckTests
     }
 
     [Fact(DisplayName = "GraphQLHealthCheck - ILogger - Unhealthy Schema - No Auth")]
-    public async Task UnhealthySchemaNoAuthILogger()
+    public async Task ILoggerUnhealthySchemaNoAuth()
     {
         var mockLogger = new Mock<ILogger<GraphHealthCheck>>();
 
@@ -213,8 +223,26 @@ public class GraphQLHealthCheckTests
         mockLogger.VerifyLog(m => m.LogError(It.IsAny<SchemaException?>(), It.IsAny<string?>(), It.IsAny<object>()), Times.Once);
     }
 
+    [Fact(DisplayName = "GraphQLHealthCheck - ILogger - Unhealthy Schema - No Auth - General Error")]
+    public async Task ILoggerUnhealthySchemaNoAuthGeneralError()
+    {
+        var mockLogger = new Mock<ILogger<GraphHealthCheck>>();
+        var mockRequestExecutorResolver = new Mock<IRequestExecutorResolver>();
+        mockRequestExecutorResolver
+            .Setup(m => m.GetRequestExecutorAsync(It.IsAny<string?>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new Exception("Splash!"));
+
+        var result = await new GraphHealthCheck(mockRequestExecutorResolver.Object, mockLogger.Object)
+            .CheckHealthAsync(null!);
+
+        Assert.Equal(HealthStatus.Unhealthy, result.Status);
+        Assert.IsAssignableFrom<Exception>(result.Exception);
+
+        mockLogger.VerifyLog(m => m.LogError(It.IsAny<Exception?>(), It.IsAny<string?>(), It.IsAny<object>()), Times.Once);
+    }
+
     [Fact(DisplayName = "GraphQLHealthCheck - ILogger - Healthy - Auth")]
-    public async Task HealthyAuthILogger()
+    public async Task ILoggerHealthyAuth()
     {
         var mockLogger = new Mock<ILogger<GraphHealthCheck>>();
 
@@ -237,7 +265,7 @@ public class GraphQLHealthCheckTests
     }
 
     [Fact(DisplayName = "GraphQLHealthCheck - ILogger - Healthy")]
-    public async Task HealthyILogger()
+    public async Task ILoggerHealthy()
     {
         var mockLogger = new Mock<ILogger<GraphHealthCheck>>();
 
@@ -256,51 +284,5 @@ public class GraphQLHealthCheckTests
         Assert.Null(result.Description);
 
         mockLogger.VerifyLog(m => m.LogError(It.IsAny<SchemaException?>(), It.IsAny<string?>(), It.IsAny<object>()), Times.Never);
-    }
-
-    [Fact(DisplayName = "GraphQLHealthCheck - ILogFn - Unhealthy Schema")]
-    public async Task UnhealthyILogFn()
-    {
-        var mockLogger = new Mock<ILogFn>();
-
-        var result = await new GraphHealthCheck(
-            new ServiceCollection()
-                .AddGraphQLServer()
-                .AddQueryType()
-                .Services
-                .BuildServiceProvider()
-                .GetRequiredService<IRequestExecutorResolver>(),
-            mockLogger.Object
-        )
-        .CheckHealthAsync(null!);
-
-        Assert.Equal(HealthStatus.Unhealthy, result.Status);
-        Assert.IsAssignableFrom<SchemaException>(result.Exception);
-        Assert.NotNull(result.Description);
-        Assert.Contains("schema", result.Description);
-
-        mockLogger.Verify(m => m.LogError(It.IsAny<string?>()), Times.Once);
-    }
-
-    [Fact(DisplayName = "GraphQLHealthCheck - ILogFn - Healthy")]
-    public async Task HealthyILogFn()
-    {
-        var mockLogger = new Mock<ILogFn>();
-
-        var result = await new GraphHealthCheck(
-            new ServiceCollection()
-                .AddGraphQLServer()
-                .AddQueryType<Query>()
-                .Services
-                .BuildServiceProvider()
-                .GetRequiredService<IRequestExecutorResolver>(),
-            mockLogger.Object
-        )
-        .CheckHealthAsync(null!);
-
-        Assert.Equal(HealthStatus.Healthy, result.Status);
-        Assert.Null(result.Description);
-
-        mockLogger.Verify(m => m.LogError(It.IsAny<string?>()), Times.Never);
     }
 }
