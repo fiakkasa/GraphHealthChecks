@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Moq.Contrib.HttpClient;
+using HotChocolate.Utilities.Introspection;
 
 namespace GraphHealthChecks.Tests;
 
@@ -192,11 +193,11 @@ public class GraphQLHealthCheckTests
         .CheckHealthAsync(null!);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
-        Assert.IsAssignableFrom<HttpRequestException>(result.Exception);
+        Assert.IsAssignableFrom<IntrospectionException>(result.Exception);
         Assert.NotNull(result.Description);
         Assert.Contains("general", result.Description);
 
-        mockLogger.VerifyLog(m => m.LogError(It.IsAny<HttpRequestException?>(), It.IsAny<string?>(), It.IsAny<object>()), Times.Once);
+        mockLogger.VerifyLog(m => m.LogError(It.IsAny<IntrospectionException?>(), It.IsAny<string?>(), It.IsAny<object>()), Times.Once);
     }
 
     [Fact(DisplayName = "GraphQLHealthCheck - ILogger - Unhealthy Schema - No Auth")]
