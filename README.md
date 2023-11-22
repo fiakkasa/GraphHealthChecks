@@ -16,7 +16,7 @@ There appears to be a compatibility issue for projects targeting .NET 7 and asse
 
 > The call is ambiguous between the following methods or properties: 'Microsoft.Extensions.DependencyInjection.OptionsBuilderExtensions.ValidateOnStart<TOptions>(Microsoft.Extensions.Options.OptionsBuilder<TOptions>)' and 'Microsoft.Extensions.DependencyInjection.OptionsBuilderExtensions.ValidateOnStart<TOptions>(Microsoft.Extensions.Options.OptionsBuilder<TOptions>)'
 
-Until resolved please consider using the previous version of the package.
+Until resolved please consider using a previous version of the package targeting .NET 7.
 
 ## Usage
 
