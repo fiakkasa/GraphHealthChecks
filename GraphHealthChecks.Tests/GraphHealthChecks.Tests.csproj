@@ -1,37 +1,35 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="13.7.0" />
-    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.7.0" />
-    <PackageReference Include="HotChocolate.Stitching" Version="13.7.0" />
-    <PackageReference Include="ILogger.Moq" Version="1.1.10" />
-    <PackageReference Include="Moq" Version="4.18.4" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.0" />
-    <PackageReference Include="Moq.Contrib.HttpClient" Version="1.4.0" />
-    <PackageReference Include="xunit" Version="2.6.2" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.4">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <!-- Use the msbuild variant as it plays nicer with Visual Studio -->
-    <PackageReference Include="coverlet.msbuild" Version="6.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Snapshooter.Xunit" Version="0.13.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="HotChocolate.AspNetCore" Version="14.0.0-rc.0"/>
+        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="14.0.0-rc.0"/>
+        <PackageReference Include="ILogger.Moq" Version="1.1.10"/>
+        <PackageReference Include="Moq" Version="4.18.4"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.0"/>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.8"/>
+        <PackageReference Include="Moq.Contrib.HttpClient" Version="1.4.0"/>
+        <PackageReference Include="xunit" Version="2.9.0"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.msbuild" Version="6.0.2">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Snapshooter.Xunit" Version="0.14.1"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\GraphHealthChecks\GraphHealthChecks.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GraphHealthChecks\GraphHealthChecks.csproj"/>
+    </ItemGroup>
 
 </Project>

@@ -1,0 +1,8 @@
+﻿{
+  "Status": "Unhealthy",
+  "Description": "The schema cannot be resolved.",
+  "Data": {},
+  "Exception": {
+    "Message": "Unexpected schema exception occurred."
+  }
+}

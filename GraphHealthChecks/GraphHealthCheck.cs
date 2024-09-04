@@ -1,29 +1,25 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using HotChocolate;
-using HotChocolate.Execution;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Logging;
-
-namespace GraphHealthChecks;
+﻿namespace GraphHealthChecks;
 
 public record GraphHealthCheck : IHealthCheck
 {
-    public string? Schema { get; set; }
-
-    private readonly IRequestExecutorResolver _requestExecutorResolver;
-    private readonly ILogger<GraphHealthCheck>? _logger;
-
     private const string _message = $"[{nameof(GraphHealthChecks)}] An error has occurred with message: {{message}}";
     private const string _generalSchemaError = "The schema cannot be resolved.";
     private const string _generalError = "A general error has occurred.";
+    private readonly ILogger<GraphHealthCheck>? _logger;
 
-    public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver, ILogger<GraphHealthCheck> logger) =>
+    private readonly IRequestExecutorResolver _requestExecutorResolver;
+
+    public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver, ILogger<GraphHealthCheck> logger)
+    {
         (_requestExecutorResolver, _logger) = (requestExecutorResolver, logger);
+    }
 
-    public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver) =>
+    public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver)
+    {
         _requestExecutorResolver = requestExecutorResolver;
+    }
+
+    public string? Schema { get; set; }
 
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
     {
@@ -31,8 +27,8 @@ public record GraphHealthCheck : IHealthCheck
         {
             _ = (
                 await _requestExecutorResolver.GetRequestExecutorAsync(
-                    schemaName: Schema,
-                    cancellationToken: cancellationToken
+                    Schema,
+                    cancellationToken
                 )
             ).Schema.ToDocument();
 

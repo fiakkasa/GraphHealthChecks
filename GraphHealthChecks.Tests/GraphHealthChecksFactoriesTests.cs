@@ -4,11 +4,6 @@ namespace GraphHealthChecks.Tests;
 
 public class GraphHealthChecksFactoriesTests
 {
-    public class Query
-    {
-        public string Name => "Hello";
-    }
-
     [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryWithNoLogger - Custom Schema")]
     public void GraphHealthCheckFactoryWithNoLoggerCustomSchema()
     {
@@ -101,5 +96,10 @@ public class GraphHealthChecksFactoriesTests
 
         Assert.IsAssignableFrom<GraphHealthCheck>(result);
         Assert.Null((result as GraphHealthCheck)?.Schema);
+    }
+
+    public class Query
+    {
+        public string Name => "Hello";
     }
 }

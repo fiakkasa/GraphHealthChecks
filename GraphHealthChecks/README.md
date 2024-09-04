@@ -1,9 +1,5 @@
 # GraphHealthChecks
 
-[![NuGet Version](https://img.shields.io/nuget/v/GraphHealthChecks)](https://www.nuget.org/packages/GraphHealthChecks)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/GraphHealthChecks)](https://www.nuget.org/packages/GraphHealthChecks)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/fiakkasa/GraphHealthChecks/blob/master/LICENSE)
-
 Graph Health Checks for HotChocolate.
 
 The purpose of this middleware is to provide feedback in regards to the health of the schema.
@@ -23,7 +19,7 @@ The purpose of this middleware is to provide feedback in regards to the health o
 | HotChocolate Version | Last DataAnnotatedModelValidations Version | .NET Version |
 |----------------------|--------------------------------------------|--------------|
 | 13.7.0 or higher     | 2.0.1                                      | .NET 6, 8    |
-| 13.3.3 or higher     | 1.0.2                                      | .NET 6, 7    |
+| 13.3.3 or higher     | 1.0.2                                      | .NET 6       |
 
 📝For more information please visit https://www.nuget.org/packages/GraphHealthChecks/#versions-body-tab
 

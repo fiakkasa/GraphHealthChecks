@@ -1,0 +1,8 @@
+﻿{
+  "Status": "Unhealthy",
+  "Description": "The schema cannot be resolved.",
+  "Data": {},
+  "Exception": {
+    "Message": "For more details look at the `Errors` property.\n\n1. The object type `Query` has to at least define one field in order to be valid. (HotChocolate.Types.ObjectType)\n"
+  }
+}
