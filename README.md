@@ -34,8 +34,9 @@ There appears to be a compatibility issue for projects targeting .NET 7 and asse
 `OptionsBuilderExtensions.ValidateOnStart` resulting in error:
 
 > The call is ambiguous between the following methods or properties:
-> `Microsoft.Extensions.DependencyInjection.OptionsBuilderExtensions.ValidateOnStart<TOptions>(Microsoft.Extensions.Options.OptionsBuilder<TOptions>)`
-> and `Microsoft.Extensions.DependencyInjection.OptionsBuilderExtensions.ValidateOnStart<TOptions>(Microsoft.Extensions.Options.OptionsBuilder<TOptions>)`
+> ```csharp
+> Microsoft.Extensions.DependencyInjection.OptionsBuilderExtensions.ValidateOnStart<TOptions>(Microsoft.Extensions.Options.OptionsBuilder<TOptions>)
+> ```
 
 Until resolved please consider using a version of the package targeting .NET 7.
 
