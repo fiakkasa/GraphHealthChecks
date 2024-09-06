@@ -13,6 +13,7 @@
         <PackageProjectUrl>https://github.com/fiakkasa/GraphHealthChecks</PackageProjectUrl>
         <RepositoryUrl>https://github.com/fiakkasa/GraphHealthChecks</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,7 +22,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.0.8"/>
-        <PackageReference Include="HotChocolate.Execution" Version="14.0.0-rc.0"/>
+        <PackageReference Include="HotChocolate.Execution" Version="14.0.0-rc.1"/>
     </ItemGroup>
 
     <ItemGroup>

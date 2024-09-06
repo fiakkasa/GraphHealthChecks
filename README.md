@@ -6,7 +6,7 @@
 
 Graph Health Checks for HotChocolate.
 
-The purpose of this middleware is to provide feedback in regards to the health of the schema.
+The purpose of this middleware is to provide feedback regarding the health of the schema.
 
 [Nuget](https://www.nuget.org/packages/GraphHealthChecks/)
 
@@ -16,7 +16,7 @@ The purpose of this middleware is to provide feedback in regards to the health o
 
 | HotChocolate Version  | DataAnnotatedModelValidations Version | .NET Version |
 |-----------------------|---------------------------------------|--------------|
-| 14.0.0-rc.0 or higher | 3.0.0-beta.1                          | .NET 8       |
+| 14.0.0-rc.1 or higher | 3.0.0-beta.1                          | .NET 8       |
 
 ### Past Releases
 
