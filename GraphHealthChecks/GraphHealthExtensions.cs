@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-
-namespace GraphHealthChecks;
+﻿namespace GraphHealthChecks;
 
 public static class GraphHealthExtensions
 {
@@ -46,7 +41,7 @@ public static class GraphHealthExtensions
         );
 
     public static IHealthChecksBuilder AddGraphHealthWithILoggerFactory(
-         this IHealthChecksBuilder builder,
+        this IHealthChecksBuilder builder,
         string healthName = _defaultHealthName,
         string? schemaName = default,
         HealthStatus? failureStatus = default,

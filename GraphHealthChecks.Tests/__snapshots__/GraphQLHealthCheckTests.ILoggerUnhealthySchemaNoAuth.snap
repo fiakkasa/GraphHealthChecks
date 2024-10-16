@@ -1,0 +1,8 @@
+﻿{
+  "Status": "Unhealthy",
+  "Description": "The schema cannot be resolved.",
+  "Data": {},
+  "Exception": {
+    "Message": "For more details look at the `Errors` property.\n\n1. Unable to infer or resolve a schema type from the type reference `@AuthorizeDirective`. (HotChocolate.Types.ObjectType<GraphHealthChecks.Tests.GraphQLHealthCheckTests.QueryAuth>)\n"
+  }
+}

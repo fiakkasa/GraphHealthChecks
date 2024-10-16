@@ -13,12 +13,12 @@ public class GraphHealthExtensionsTests
             new ServiceCollection()
                 .AddLogging()
                 .AddHealthChecks()
-                .AddGraphHealthWithNoLogger(healthName: "health1", schemaName: "schema1")
-                .AddGraphHealthWithNoLogger(healthName: "health2", schemaName: "schema2")
-                .AddGraphHealthWithILogger(healthName: "health3", schemaName: "schema3")
-                .AddGraphHealthWithILogger(healthName: "health4", schemaName: "schema4")
-                .AddGraphHealthWithILoggerFactory(healthName: "health5", schemaName: "schema5")
-                .AddGraphHealthWithILoggerFactory(healthName: "health6", schemaName: "schema6")
+                .AddGraphHealthWithNoLogger("health1", "schema1")
+                .AddGraphHealthWithNoLogger("health2", "schema2")
+                .AddGraphHealthWithILogger("health3", "schema3")
+                .AddGraphHealthWithILogger("health4", "schema4")
+                .AddGraphHealthWithILoggerFactory("health5", "schema5")
+                .AddGraphHealthWithILoggerFactory("health6", "schema6")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -27,17 +27,17 @@ public class GraphHealthExtensionsTests
         Assert.Equal(
             options.Registrations.Count,
             new[]
-            {
-                "health1",
-                "health2",
-                "health3",
-                "health4",
-                "health5",
-                "health6"
-            }
-            .Intersect(options.Registrations.Select(x => x.Name))
-            .Distinct()
-            .Count()
+                {
+                    "health1",
+                    "health2",
+                    "health3",
+                    "health4",
+                    "health5",
+                    "health6"
+                }
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
         );
     }
 
@@ -47,14 +47,13 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddLogging()
-
                 .AddHealthChecks()
-                .AddGraphHealthWithNoLogger(healthName: "health1", schemaName: "schema")
-                .AddGraphHealthWithNoLogger(healthName: "health2", schemaName: "schema")
-                .AddGraphHealthWithILogger(healthName: "health3", schemaName: "schema")
-                .AddGraphHealthWithILogger(healthName: "health4", schemaName: "schema")
-                .AddGraphHealthWithILoggerFactory(healthName: "health5", schemaName: "schema")
-                .AddGraphHealthWithILoggerFactory(healthName: "health6", schemaName: "schema")
+                .AddGraphHealthWithNoLogger("health1", "schema")
+                .AddGraphHealthWithNoLogger("health2", "schema")
+                .AddGraphHealthWithILogger("health3", "schema")
+                .AddGraphHealthWithILogger("health4", "schema")
+                .AddGraphHealthWithILoggerFactory("health5", "schema")
+                .AddGraphHealthWithILoggerFactory("health6", "schema")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -63,17 +62,17 @@ public class GraphHealthExtensionsTests
         Assert.Equal(
             options.Registrations.Count,
             new[]
-            {
-                "health1",
-                "health2",
-                "health3",
-                "health4",
-                "health5",
-                "health6"
-            }
-            .Intersect(options.Registrations.Select(x => x.Name))
-            .Distinct()
-            .Count()
+                {
+                    "health1",
+                    "health2",
+                    "health3",
+                    "health4",
+                    "health5",
+                    "health6"
+                }
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
         );
     }
 
@@ -83,14 +82,13 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddLogging()
-
                 .AddHealthChecks()
-                .AddGraphHealthWithNoLogger(healthName: "health1")
-                .AddGraphHealthWithNoLogger(healthName: "health2")
-                .AddGraphHealthWithILogger(healthName: "health3")
-                .AddGraphHealthWithILogger(healthName: "health4")
-                .AddGraphHealthWithILoggerFactory(healthName: "health5")
-                .AddGraphHealthWithILoggerFactory(healthName: "health6")
+                .AddGraphHealthWithNoLogger("health1")
+                .AddGraphHealthWithNoLogger("health2")
+                .AddGraphHealthWithILogger("health3")
+                .AddGraphHealthWithILogger("health4")
+                .AddGraphHealthWithILoggerFactory("health5")
+                .AddGraphHealthWithILoggerFactory("health6")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -99,17 +97,17 @@ public class GraphHealthExtensionsTests
         Assert.Equal(
             options.Registrations.Count,
             new[]
-            {
-                "health1",
-                "health2",
-                "health3",
-                "health4",
-                "health5",
-                "health6"
-            }
-            .Intersect(options.Registrations.Select(x => x.Name))
-            .Distinct()
-            .Count()
+                {
+                    "health1",
+                    "health2",
+                    "health3",
+                    "health4",
+                    "health5",
+                    "health6"
+                }
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
         );
     }
 
@@ -119,14 +117,13 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddLogging()
-
                 .AddHealthChecks()
-                .AddGraphHealthWithNoLogger(healthName: "health")
-                .AddGraphHealthWithNoLogger(healthName: "health")
-                .AddGraphHealthWithILogger(healthName: "health")
-                .AddGraphHealthWithILogger(healthName: "health")
-                .AddGraphHealthWithILoggerFactory(healthName: "health")
-                .AddGraphHealthWithILoggerFactory(healthName: "health")
+                .AddGraphHealthWithNoLogger("health")
+                .AddGraphHealthWithNoLogger("health")
+                .AddGraphHealthWithILogger("health")
+                .AddGraphHealthWithILogger("health")
+                .AddGraphHealthWithILoggerFactory("health")
+                .AddGraphHealthWithILoggerFactory("health")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -147,7 +144,6 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddLogging()
-
                 .AddHealthChecks()
                 .AddGraphHealthWithNoLogger()
                 .AddGraphHealthWithNoLogger()
@@ -196,7 +192,7 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddHealthChecks()
-                .AddGraphHealthWithNoLogger(healthName: "Graph")
+                .AddGraphHealthWithNoLogger("Graph")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -240,7 +236,7 @@ public class GraphHealthExtensionsTests
             new ServiceCollection()
                 .AddLogging()
                 .AddHealthChecks()
-                .AddGraphHealthWithILogger(healthName: "Graph")
+                .AddGraphHealthWithILogger("Graph")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -284,7 +280,7 @@ public class GraphHealthExtensionsTests
             new ServiceCollection()
                 .AddLogging()
                 .AddHealthChecks()
-                .AddGraphHealthWithILoggerFactory(healthName: "Graph")
+                .AddGraphHealthWithILoggerFactory("Graph")
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()

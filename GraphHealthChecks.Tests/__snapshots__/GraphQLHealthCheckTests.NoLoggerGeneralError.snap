@@ -1,0 +1,8 @@
+﻿{
+  "Status": "Unhealthy",
+  "Description": "A general error has occurred.",
+  "Data": {},
+  "Exception": {
+    "Message": "Splash!"
+  }
+}
