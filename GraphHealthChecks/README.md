@@ -10,9 +10,9 @@ The purpose of this middleware is to provide feedback regarding the health of th
 
 ### Current Releases
 
-| HotChocolate Version  | DataAnnotatedModelValidations Version | .NET Version |
-|-----------------------|---------------------------------------|--------------|
-| 14.0.0-rc.3 or higher | 3.0.0-beta.1                          | .NET 8       |
+| HotChocolate Version | DataAnnotatedModelValidations Version | .NET Version |
+|----------------------|---------------------------------------|--------------|
+| 14.0.0 or higher     | 3.0.0                                 | .NET 8       |
 
 ### Past Releases
 
