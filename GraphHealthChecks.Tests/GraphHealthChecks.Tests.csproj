@@ -9,15 +9,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="HotChocolate.AspNetCore" Version="15.0.3" />
-        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="15.0.3" />
-        <PackageReference Include="ILogger.Moq" Version="1.1.10" />
-        <PackageReference Include="Moq" Version="[4.18.4]" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.1" />
-        <PackageReference Include="Moq.Contrib.HttpClient" Version="1.4.0" />
-        <PackageReference Include="System.Text.Json" Version="9.0.1" />
-        <PackageReference Include="xunit" Version="2.9.3" />
+        <PackageReference Include="HotChocolate.AspNetCore" Version="15.0.3"/>
+        <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="15.0.3"/>
+        <PackageReference Include="ILogger.Moq" Version="1.1.10"/>
+        <PackageReference Include="Moq" Version="[4.18.4]"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0"/>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.1"/>
+        <PackageReference Include="Moq.Contrib.HttpClient" Version="1.4.0"/>
+        <PackageReference Include="System.Text.Json" Version="9.0.1"/>
+        <PackageReference Include="xunit" Version="2.9.3"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="3.0.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,11 +26,11 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Snapshooter.Xunit" Version="1.0.1" />
+        <PackageReference Include="Snapshooter.Xunit" Version="1.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\GraphHealthChecks\GraphHealthChecks.csproj" />
+        <ProjectReference Include="..\GraphHealthChecks\GraphHealthChecks.csproj"/>
     </ItemGroup>
 
 </Project>
