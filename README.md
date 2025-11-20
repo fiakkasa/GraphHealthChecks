@@ -14,19 +14,20 @@ The purpose of this middleware is to provide feedback regarding the health of th
 
 ### Current Releases
 
-| HotChocolate Version | GraphHealthChecks Version | .NET Version |
-|----------------------|---------------------------|--------------|
-| 15.0.3 or higher     | 4.0.1                     | .NET 8, 9    |
-| 15.0.3 or higher     | 4.0.0                     | .NET 8, 9    |
-| 14.3.0 or higher     | 3.3.0                     | .NET 8, 9    |
-| 14.2.0 or higher     | 3.2.0                     | .NET 8, 9    |
-| 14.1.0 or higher     | 3.1.0                     | .NET 8, 9    |
-| 14.0.0 or higher     | 3.0.0                     | .NET 8       |
+| HotChocolate Version | GraphHealthChecks Version | .NET Version  |
+| -------------------- | ------------------------- | ------------- |
+| 15.1.11 or higher    | 5.0.0                     | .NET 8, 9, 10 |
+| 15.0.3 or higher     | 4.0.1                     | .NET 8, 9     |
+| 15.0.3 or higher     | 4.0.0                     | .NET 8, 9     |
+| 14.3.0 or higher     | 3.3.0                     | .NET 8, 9     |
+| 14.2.0 or higher     | 3.2.0                     | .NET 8, 9     |
+| 14.1.0 or higher     | 3.1.0                     | .NET 8, 9     |
+| 14.0.0 or higher     | 3.0.0                     | .NET 8        |
 
 ### Past Releases
 
 | HotChocolate Version | Last GraphHealthChecks Version | .NET Version |
-|----------------------|--------------------------------|--------------|
+| -------------------- | ------------------------------ | ------------ |
 | 13.7.0 or higher     | 2.0.1                          | .NET 6, 8    |
 | 13.3.3 or higher     | 1.0.2                          | .NET 6, 7    |
 
@@ -39,6 +40,7 @@ There appears to be a compatibility issue for projects targeting .NET 7 and asse
 `OptionsBuilderExtensions.ValidateOnStart` resulting in error:
 
 > The call is ambiguous between the following methods or properties:
+>
 > ```csharp
 > Microsoft.Extensions.DependencyInjection.OptionsBuilderExtensions.ValidateOnStart<TOptions>(Microsoft.Extensions.Options.OptionsBuilder<TOptions>)
 > ```
