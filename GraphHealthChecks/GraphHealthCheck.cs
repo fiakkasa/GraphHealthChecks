@@ -7,14 +7,15 @@ public record GraphHealthCheck : IHealthCheck
     private const string _generalError = "A general error has occurred.";
     private readonly ILogger<GraphHealthCheck>? _logger;
 
-    private readonly IRequestExecutorResolver _requestExecutorResolver;
+    private readonly IRequestExecutorManager _requestExecutorResolver;
 
-    public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver, ILogger<GraphHealthCheck> logger)
+    public GraphHealthCheck(IRequestExecutorManager requestExecutorResolver, ILogger<GraphHealthCheck> logger)
     {
-        (_requestExecutorResolver, _logger) = (requestExecutorResolver, logger);
+        _requestExecutorResolver = requestExecutorResolver;
+        _logger = logger;
     }
 
-    public GraphHealthCheck(IRequestExecutorResolver requestExecutorResolver)
+    public GraphHealthCheck(IRequestExecutorManager requestExecutorResolver)
     {
         _requestExecutorResolver = requestExecutorResolver;
     }
@@ -25,12 +26,11 @@ public record GraphHealthCheck : IHealthCheck
     {
         try
         {
-            _ = (
-                await _requestExecutorResolver.GetRequestExecutorAsync(
-                    Schema,
-                    cancellationToken
-                )
-            ).Schema.ToDocument();
+            var executor = await _requestExecutorResolver.GetExecutorAsync(
+                Schema,
+                cancellationToken
+            );
+            _ = executor.Schema.ToString();
 
             return new HealthCheckResult(HealthStatus.Healthy);
         }

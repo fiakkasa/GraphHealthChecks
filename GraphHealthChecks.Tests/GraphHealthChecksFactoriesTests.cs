@@ -15,7 +15,7 @@ public class GraphHealthChecksFactoriesTests
                 .BuildServiceProvider()
         );
 
-        Assert.IsAssignableFrom<GraphHealthCheck>(result);
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
         Assert.Equal("schema", (result as GraphHealthCheck)?.Schema);
     }
 
@@ -30,7 +30,7 @@ public class GraphHealthChecksFactoriesTests
                 .BuildServiceProvider()
         );
 
-        Assert.IsAssignableFrom<GraphHealthCheck>(result);
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
         Assert.Null((result as GraphHealthCheck)?.Schema);
     }
 
@@ -46,7 +46,7 @@ public class GraphHealthChecksFactoriesTests
                 .BuildServiceProvider()
         );
 
-        Assert.IsAssignableFrom<GraphHealthCheck>(result);
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
         Assert.Equal("schema", (result as GraphHealthCheck)?.Schema);
     }
 
@@ -62,7 +62,7 @@ public class GraphHealthChecksFactoriesTests
                 .BuildServiceProvider()
         );
 
-        Assert.IsAssignableFrom<GraphHealthCheck>(result);
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
         Assert.Null((result as GraphHealthCheck)?.Schema);
     }
 
@@ -78,7 +78,7 @@ public class GraphHealthChecksFactoriesTests
                 .BuildServiceProvider()
         );
 
-        Assert.IsAssignableFrom<GraphHealthCheck>(result);
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
         Assert.Equal("schema", (result as GraphHealthCheck)?.Schema);
     }
 
@@ -94,7 +94,7 @@ public class GraphHealthChecksFactoriesTests
                 .BuildServiceProvider()
         );
 
-        Assert.IsAssignableFrom<GraphHealthCheck>(result);
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
         Assert.Null((result as GraphHealthCheck)?.Schema);
     }
 

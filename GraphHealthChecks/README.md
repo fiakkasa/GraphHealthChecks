@@ -11,7 +11,8 @@ The purpose of this middleware is to provide feedback regarding the health of th
 ### Current Releases
 
 | HotChocolate Version | GraphHealthChecks Version | .NET Version  |
-| -------------------- | ------------------------- | ------------- |
+|----------------------|---------------------------|---------------|
+| 16.0.0 or higher     | 6.0.0                     | .NET 8, 9, 10 |
 | 15.1.11 or higher    | 5.0.0                     | .NET 8, 9, 10 |
 | 15.0.3 or higher     | 4.0.1                     | .NET 8, 9     |
 | 15.0.3 or higher     | 4.0.0                     | .NET 8, 9     |
@@ -23,7 +24,7 @@ The purpose of this middleware is to provide feedback regarding the health of th
 ### Past Releases
 
 | HotChocolate Version | Last GraphHealthChecks Version | .NET Version |
-| -------------------- | ------------------------------ | ------------ |
+|----------------------|--------------------------------|--------------|
 | 13.7.0 or higher     | 2.0.1                          | .NET 6, 8    |
 | 13.3.3 or higher     | 1.0.2                          | .NET 6, 7    |
 

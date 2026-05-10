@@ -1,2 +1,3 @@
-﻿global using Xunit;
-global using NSubstitute;
+﻿global using NSubstitute;
+global using Snapshooter.Xunit;
+global using Xunit;

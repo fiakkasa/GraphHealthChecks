@@ -6,6 +6,16 @@ namespace GraphHealthChecks.Tests;
 
 public class GraphHealthExtensionsTests
 {
+    private static readonly string[] _schemas =
+    [
+        "health1",
+        "health2",
+        "health3",
+        "health4",
+        "health5",
+        "health6"
+    ];
+
     [Fact(DisplayName = "AddGraphHealth - Multiple Instances - Separate Names and Schemas")]
     public void MultipleInstancesSeparateNamesAndSchemas()
     {
@@ -26,15 +36,7 @@ public class GraphHealthExtensionsTests
 
         Assert.Equal(
             options.Registrations.Count,
-            new[]
-                {
-                    "health1",
-                    "health2",
-                    "health3",
-                    "health4",
-                    "health5",
-                    "health6"
-                }
+            _schemas
                 .Intersect(options.Registrations.Select(x => x.Name))
                 .Distinct()
                 .Count()
@@ -61,15 +63,7 @@ public class GraphHealthExtensionsTests
 
         Assert.Equal(
             options.Registrations.Count,
-            new[]
-                {
-                    "health1",
-                    "health2",
-                    "health3",
-                    "health4",
-                    "health5",
-                    "health6"
-                }
+            _schemas
                 .Intersect(options.Registrations.Select(x => x.Name))
                 .Distinct()
                 .Count()
@@ -96,15 +90,7 @@ public class GraphHealthExtensionsTests
 
         Assert.Equal(
             options.Registrations.Count,
-            new[]
-                {
-                    "health1",
-                    "health2",
-                    "health3",
-                    "health4",
-                    "health5",
-                    "health6"
-                }
+            _schemas
                 .Intersect(options.Registrations.Select(x => x.Name))
                 .Distinct()
                 .Count()
