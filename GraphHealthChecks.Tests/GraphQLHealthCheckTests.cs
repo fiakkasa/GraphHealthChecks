@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using NSubstitute.ExceptionExtensions;
-using Snapshooter.Xunit;
 
 namespace GraphHealthChecks.Tests;
 
@@ -25,16 +24,16 @@ public class GraphQLHealthCheckTests
     [Fact(DisplayName = "GraphQLHealthCheck - No Logger - Unhealthy Schema")]
     public async Task NoLoggerUnhealthySchema()
     {
-        var mockRequestExecutorResolver = Substitute.For<IRequestExecutorResolver>();
+        var mockRequestExecutorResolver = Substitute.For<IRequestExecutorManager>();
         mockRequestExecutorResolver
-            .GetRequestExecutorAsync(Arg.Any<string?>(), Arg.Any<CancellationToken>())
+            .GetExecutorAsync(Arg.Any<string?>(), Arg.Any<CancellationToken>())
             .Throws(new SchemaException());
 
         var result = await new GraphHealthCheck(mockRequestExecutorResolver)
             .CheckHealthAsync(null!);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
-        Assert.IsAssignableFrom<SchemaException>(result.Exception);
+        Assert.IsType<SchemaException>(result.Exception, exactMatch: false);
 
         GetErrorResult(result).MatchSnapshot();
     }
@@ -42,15 +41,15 @@ public class GraphQLHealthCheckTests
     [Fact(DisplayName = "GraphQLHealthCheck - No Logger - General Error")]
     public async Task NoLoggerGeneralError()
     {
-        var mockRequestExecutorResolver = Substitute.For<IRequestExecutorResolver>();
+        var mockRequestExecutorResolver = Substitute.For<IRequestExecutorManager>();
         mockRequestExecutorResolver
-            .GetRequestExecutorAsync(Arg.Any<string?>(), Arg.Any<CancellationToken>())
+            .GetExecutorAsync(Arg.Any<string?>(), Arg.Any<CancellationToken>())
             .Throws(new Exception("Splash!"));
 
         var result = await new GraphHealthCheck(mockRequestExecutorResolver).CheckHealthAsync(null!);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
-        Assert.IsAssignableFrom<Exception>(result.Exception);
+        Assert.IsType<Exception>(result.Exception, exactMatch: false);
 
         GetErrorResult(result).MatchSnapshot();
     }
@@ -64,7 +63,7 @@ public class GraphQLHealthCheckTests
                     .AddQueryType<Query>()
                     .Services
                     .BuildServiceProvider()
-                    .GetRequiredService<IRequestExecutorResolver>()
+                    .GetRequiredService<IRequestExecutorManager>()
             )
             .CheckHealthAsync(null!);
 
@@ -78,9 +77,9 @@ public class GraphQLHealthCheckTests
     public async Task ILoggerGeneralError()
     {
         var mockLogger = Substitute.For<ILogger<GraphHealthCheck>>();
-        var mockResolver = Substitute.For<IRequestExecutorResolver>();
+        var mockResolver = Substitute.For<IRequestExecutorManager>();
         mockResolver
-            .GetRequestExecutorAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .GetExecutorAsync(Arg.Any<string?>(), Arg.Any<CancellationToken>())
             .Throws(new Exception("Splash!"));
 
         var result = await new GraphHealthCheck(
@@ -90,17 +89,19 @@ public class GraphQLHealthCheckTests
             .CheckHealthAsync(null!);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
-        Assert.IsAssignableFrom<Exception>(result.Exception);
+        Assert.IsType<Exception>(result.Exception, exactMatch: false);
         Assert.NotNull(result.Description);
         Assert.Contains("general", result.Description);
 
-        mockLogger.Received(1).Log(
-            LogLevel.Error,
-            Arg.Any<EventId>(),
-            Arg.Any<object>(),
-            Arg.Is<Exception>(x => x.Message == "Splash!"),
-            Arg.Any<Func<object, Exception?, string>>()
-        );
+        mockLogger
+            .Received(1)
+            .Log(
+                LogLevel.Error,
+                Arg.Any<EventId>(),
+                Arg.Any<object>(),
+                Arg.Is<Exception>(x => x.Message == "Splash!"),
+                Arg.Any<Func<object, Exception?, string>>()
+            );
 
         GetErrorResult(result).MatchSnapshot();
     }
@@ -116,23 +117,25 @@ public class GraphQLHealthCheckTests
                     .AddQueryType()
                     .Services
                     .BuildServiceProvider()
-                    .GetRequiredService<IRequestExecutorResolver>(),
+                    .GetRequiredService<IRequestExecutorManager>(),
                 mockLogger
             )
             .CheckHealthAsync(null!);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
-        Assert.IsAssignableFrom<SchemaException>(result.Exception);
+        Assert.IsType<SchemaException>(result.Exception, exactMatch: false);
         Assert.NotNull(result.Description);
         Assert.Contains("schema", result.Description);
 
-        mockLogger.Received(1).Log(
-            LogLevel.Error,
-            Arg.Any<EventId>(),
-            Arg.Any<object>(),
-            Arg.Any<SchemaException>(),
-            Arg.Any<Func<object, Exception?, string>>()
-        );
+        mockLogger
+            .Received(1)
+            .Log(
+                LogLevel.Error,
+                Arg.Any<EventId>(),
+                Arg.Any<object>(),
+                Arg.Any<SchemaException>(),
+                Arg.Any<Func<object, Exception?, string>>()
+            );
 
         GetErrorResult(result).MatchSnapshot();
     }
@@ -148,23 +151,25 @@ public class GraphQLHealthCheckTests
                     .AddQueryType<QueryAuth>()
                     .Services
                     .BuildServiceProvider()
-                    .GetRequiredService<IRequestExecutorResolver>(),
+                    .GetRequiredService<IRequestExecutorManager>(),
                 mockLogger
             )
             .CheckHealthAsync(null!);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
-        Assert.IsAssignableFrom<SchemaException>(result.Exception);
+        Assert.IsType<SchemaException>(result.Exception, exactMatch: false);
         Assert.NotNull(result.Description);
         Assert.Contains("schema", result.Description);
 
-        mockLogger.Received(1).Log(
-            LogLevel.Error,
-            Arg.Any<EventId>(),
-            Arg.Any<object>(),
-            Arg.Any<SchemaException>(),
-            Arg.Any<Func<object, Exception?, string>>()
-        );
+        mockLogger
+            .Received(1)
+            .Log(
+                LogLevel.Error,
+                Arg.Any<EventId>(),
+                Arg.Any<object>(),
+                Arg.Any<SchemaException>(),
+                Arg.Any<Func<object, Exception?, string>>()
+            );
 
         GetErrorResult(result).MatchSnapshot();
     }
@@ -173,24 +178,26 @@ public class GraphQLHealthCheckTests
     public async Task ILoggerUnhealthySchemaNoAuthGeneralError()
     {
         var mockLogger = Substitute.For<ILogger<GraphHealthCheck>>();
-        var mockRequestExecutorResolver = Substitute.For<IRequestExecutorResolver>();
+        var mockRequestExecutorResolver = Substitute.For<IRequestExecutorManager>();
         mockRequestExecutorResolver
-            .GetRequestExecutorAsync(Arg.Any<string?>(), Arg.Any<CancellationToken>())
+            .GetExecutorAsync(Arg.Any<string?>(), Arg.Any<CancellationToken>())
             .Throws(new Exception("Splash!"));
 
         var result = await new GraphHealthCheck(mockRequestExecutorResolver, mockLogger)
             .CheckHealthAsync(null!);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
-        Assert.IsAssignableFrom<Exception>(result.Exception);
+        Assert.IsType<Exception>(result.Exception, exactMatch: false);
 
-        mockLogger.Received(1).Log(
-            LogLevel.Error,
-            Arg.Any<EventId>(),
-            Arg.Any<object>(),
-            Arg.Is<Exception>(x => x.Message == "Splash!"),
-            Arg.Any<Func<object, Exception?, string>>()
-        );
+        mockLogger
+            .Received(1)
+            .Log(
+                LogLevel.Error,
+                Arg.Any<EventId>(),
+                Arg.Any<object>(),
+                Arg.Is<Exception>(x => x.Message == "Splash!"),
+                Arg.Any<Func<object, Exception?, string>>()
+            );
 
         GetErrorResult(result).MatchSnapshot();
     }
@@ -207,7 +214,7 @@ public class GraphQLHealthCheckTests
                     .AddQueryType<QueryAuth>()
                     .Services
                     .BuildServiceProvider()
-                    .GetRequiredService<IRequestExecutorResolver>(),
+                    .GetRequiredService<IRequestExecutorManager>(),
                 mockLogger
             )
             .CheckHealthAsync(null!);
@@ -215,13 +222,15 @@ public class GraphQLHealthCheckTests
         Assert.Equal(HealthStatus.Healthy, result.Status);
         Assert.Null(result.Description);
 
-        mockLogger.Received(0).Log(
-            LogLevel.Error,
-            Arg.Any<EventId>(),
-            Arg.Any<object>(),
-            Arg.Any<SchemaException>(),
-            Arg.Any<Func<object, Exception?, string>>()
-        );
+        mockLogger
+            .Received(0)
+            .Log(
+                LogLevel.Error,
+                Arg.Any<EventId>(),
+                Arg.Any<object>(),
+                Arg.Any<SchemaException>(),
+                Arg.Any<Func<object, Exception?, string>>()
+            );
 
         result.MatchSnapshot();
     }
@@ -237,7 +246,7 @@ public class GraphQLHealthCheckTests
                     .AddQueryType<Query>()
                     .Services
                     .BuildServiceProvider()
-                    .GetRequiredService<IRequestExecutorResolver>(),
+                    .GetRequiredService<IRequestExecutorManager>(),
                 mockLogger
             )
             .CheckHealthAsync(null!);
@@ -245,13 +254,15 @@ public class GraphQLHealthCheckTests
         Assert.Equal(HealthStatus.Healthy, result.Status);
         Assert.Null(result.Description);
 
-        mockLogger.Received(0).Log(
-            LogLevel.Error,
-            Arg.Any<EventId>(),
-            Arg.Any<object>(),
-            Arg.Any<SchemaException>(),
-            Arg.Any<Func<object, Exception?, string>>()
-        );
+        mockLogger
+            .Received(0)
+            .Log(
+                LogLevel.Error,
+                Arg.Any<EventId>(),
+                Arg.Any<object>(),
+                Arg.Any<SchemaException>(),
+                Arg.Any<Func<object, Exception?, string>>()
+            );
 
         result.MatchSnapshot();
     }
