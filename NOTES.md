@@ -19,7 +19,7 @@
 
 In one Go!
 
-```powershell
+```bash
 dotnet test /p:CollectCoverage=true /p:Threshold=80 /p:CoverletOutputFormat=cobertura /p:CoverletOutput='../coverage.cobertura.xml'
 dotnet reportgenerator -reports:./coverage.cobertura.net10.0.xml -targetdir:./TestResults -reporttypes:Html
 ```
