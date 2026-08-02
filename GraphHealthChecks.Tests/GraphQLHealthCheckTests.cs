@@ -30,7 +30,7 @@ public class GraphQLHealthCheckTests
             .Throws(new SchemaException());
 
         var result = await new GraphHealthCheck(mockRequestExecutorResolver)
-            .CheckHealthAsync(null!);
+            .CheckHealthAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
         Assert.IsType<SchemaException>(result.Exception, exactMatch: false);
@@ -46,7 +46,7 @@ public class GraphQLHealthCheckTests
             .GetExecutorAsync(Arg.Any<string?>(), Arg.Any<CancellationToken>())
             .Throws(new Exception("Splash!"));
 
-        var result = await new GraphHealthCheck(mockRequestExecutorResolver).CheckHealthAsync(null!);
+        var result = await new GraphHealthCheck(mockRequestExecutorResolver).CheckHealthAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
         Assert.IsType<Exception>(result.Exception, exactMatch: false);
@@ -65,7 +65,7 @@ public class GraphQLHealthCheckTests
                     .BuildServiceProvider()
                     .GetRequiredService<IRequestExecutorManager>()
             )
-            .CheckHealthAsync(null!);
+            .CheckHealthAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(HealthStatus.Healthy, result.Status);
         Assert.Null(result.Description);
@@ -86,7 +86,7 @@ public class GraphQLHealthCheckTests
                 mockResolver,
                 mockLogger
             )
-            .CheckHealthAsync(null!);
+            .CheckHealthAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
         Assert.IsType<Exception>(result.Exception, exactMatch: false);
@@ -99,7 +99,7 @@ public class GraphQLHealthCheckTests
                 LogLevel.Error,
                 Arg.Any<EventId>(),
                 Arg.Any<object>(),
-                Arg.Is<Exception>(x => x.Message == "Splash!"),
+                Arg.Is<Exception>(x => x!.Message == "Splash!"),
                 Arg.Any<Func<object, Exception?, string>>()
             );
 
@@ -120,7 +120,7 @@ public class GraphQLHealthCheckTests
                     .GetRequiredService<IRequestExecutorManager>(),
                 mockLogger
             )
-            .CheckHealthAsync(null!);
+            .CheckHealthAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
         Assert.IsType<SchemaException>(result.Exception, exactMatch: false);
@@ -154,7 +154,7 @@ public class GraphQLHealthCheckTests
                     .GetRequiredService<IRequestExecutorManager>(),
                 mockLogger
             )
-            .CheckHealthAsync(null!);
+            .CheckHealthAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
         Assert.IsType<SchemaException>(result.Exception, exactMatch: false);
@@ -184,7 +184,7 @@ public class GraphQLHealthCheckTests
             .Throws(new Exception("Splash!"));
 
         var result = await new GraphHealthCheck(mockRequestExecutorResolver, mockLogger)
-            .CheckHealthAsync(null!);
+            .CheckHealthAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(HealthStatus.Unhealthy, result.Status);
         Assert.IsType<Exception>(result.Exception, exactMatch: false);
@@ -195,7 +195,7 @@ public class GraphQLHealthCheckTests
                 LogLevel.Error,
                 Arg.Any<EventId>(),
                 Arg.Any<object>(),
-                Arg.Is<Exception>(x => x.Message == "Splash!"),
+                Arg.Is<Exception>(x => x!.Message == "Splash!"),
                 Arg.Any<Func<object, Exception?, string>>()
             );
 
@@ -217,7 +217,7 @@ public class GraphQLHealthCheckTests
                     .GetRequiredService<IRequestExecutorManager>(),
                 mockLogger
             )
-            .CheckHealthAsync(null!);
+            .CheckHealthAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(HealthStatus.Healthy, result.Status);
         Assert.Null(result.Description);
@@ -249,7 +249,7 @@ public class GraphQLHealthCheckTests
                     .GetRequiredService<IRequestExecutorManager>(),
                 mockLogger
             )
-            .CheckHealthAsync(null!);
+            .CheckHealthAsync(null!, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(HealthStatus.Healthy, result.Status);
         Assert.Null(result.Description);
