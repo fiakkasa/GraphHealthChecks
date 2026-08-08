@@ -6,7 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>$(MSBuildProjectName)</PackageId>
-    <Version>6.0.1</Version>
+    <Version>6.1.0</Version>
     <Authors>Adamos Fiakkas</Authors>
     <Description>Graph Health Checks for HotChocolate</Description>
     <Copyright>Adamos Fiakkas</Copyright>
@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.8"/>
-    <PackageReference Include="HotChocolate.Types" Version="16.0.9"/>
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.10"/>
+    <PackageReference Include="HotChocolate.Types" Version="16.6.0"/>
   </ItemGroup>
 
   <ItemGroup>

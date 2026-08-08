@@ -57,4 +57,58 @@ public static class GraphHealthExtensions
                 timeout
             )
         );
+
+    public static IHealthChecksBuilder AddGraphHealthUsingProviderWithNoLogger(
+        this IHealthChecksBuilder builder,
+        string healthName = _defaultHealthName,
+        string? schemaName = default,
+        HealthStatus? failureStatus = default,
+        IEnumerable<string>? tags = default,
+        TimeSpan? timeout = default
+    ) =>
+        builder.Add(
+            new(
+                healthName,
+                GraphHealthChecksFactories.GraphHealthCheckFactoryUsingProviderWithNoLogger(schemaName),
+                failureStatus,
+                tags,
+                timeout
+            )
+        );
+
+    public static IHealthChecksBuilder AddGraphHealthUsingProviderWithILogger(
+        this IHealthChecksBuilder builder,
+        string healthName = _defaultHealthName,
+        string? schemaName = default,
+        HealthStatus? failureStatus = default,
+        IEnumerable<string>? tags = default,
+        TimeSpan? timeout = default
+    ) =>
+        builder.Add(
+            new(
+                healthName,
+                GraphHealthChecksFactories.GraphHealthCheckFactoryUsingProviderWithILogger(schemaName),
+                failureStatus,
+                tags,
+                timeout
+            )
+        );
+
+    public static IHealthChecksBuilder AddGraphHealthUsingProviderWithILoggerFactory(
+        this IHealthChecksBuilder builder,
+        string healthName = _defaultHealthName,
+        string? schemaName = default,
+        HealthStatus? failureStatus = default,
+        IEnumerable<string>? tags = default,
+        TimeSpan? timeout = default
+    ) =>
+        builder.Add(
+            new(
+                healthName,
+                GraphHealthChecksFactories.GraphHealthCheckFactoryUsingProviderWithILoggerFactory(schemaName),
+                failureStatus,
+                tags,
+                timeout
+            )
+        );
 }

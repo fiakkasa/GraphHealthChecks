@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="16.0.9"/>
-    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="16.0.9"/>
+    <PackageReference Include="HotChocolate.AspNetCore" Version="16.6.0"/>
+    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="16.6.0"/>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1"/>
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.10"/>
     <PackageReference Include="NSubstitute" Version="6.0.0"/>
