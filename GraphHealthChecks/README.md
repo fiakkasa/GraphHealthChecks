@@ -12,6 +12,7 @@ The purpose of this middleware is to provide feedback regarding the health of th
 
 | HotChocolate Version | GraphHealthChecks Version | .NET Version  |
 | -------------------- | ------------------------- | ------------- |
+| 16.6.0 or higher     | 6.1.0                     | .NET 8, 9, 10 |
 | 16.0.9 or higher     | 6.0.1                     | .NET 8, 9, 10 |
 | 16.0.0 or higher     | 6.0.0                     | .NET 8, 9, 10 |
 
@@ -48,6 +49,9 @@ Locate the services registration and append one of:
 - `.AddGraphHealthWithNoLogger` - use when no logging is required
 - `.AddGraphHealthWithILogger` - use when the ILogger provider is available
 - `.AddGraphHealthWithILoggerFactory` - use when the ILoggerFactory provider is available
+- `.AddGraphHealthUsingProviderWithNoLogger` - use when no logging is required for setups where `IRequestExecutorProvider` is available but `IRequestExecutorManager` is not
+- `.AddGraphHealthUsingProviderWithILogger` - use when the ILogger provider is available for setups where `IRequestExecutorProvider` is available but `IRequestExecutorManager` is not
+- `.AddGraphHealthUsingProviderWithILoggerFactory` - use when the ILoggerFactory provider is available for setups where `IRequestExecutorProvider` is available but `IRequestExecutorManager` is not
 
 ⚠️ Bear in mind that `IHealthChecksBuilder` needs to be appended before any of the aforementioned.
 

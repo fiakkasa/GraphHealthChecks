@@ -25,4 +25,28 @@ public static class GraphHealthChecksFactories
         {
             Schema = schemaName
         };
+
+    public static Func<IServiceProvider, IHealthCheck> GraphHealthCheckFactoryUsingProviderWithNoLogger(string? schemaName = default) => sp =>
+        new GraphHealthCheck(sp.GetRequiredService<IRequestExecutorProvider>())
+        {
+            Schema = schemaName
+        };
+
+    public static Func<IServiceProvider, IHealthCheck> GraphHealthCheckFactoryUsingProviderWithILogger(string? schemaName = default) => sp =>
+        new GraphHealthCheck(
+            sp.GetRequiredService<IRequestExecutorProvider>(),
+            sp.GetRequiredService<ILogger<GraphHealthCheck>>()
+        )
+        {
+            Schema = schemaName
+        };
+
+    public static Func<IServiceProvider, IHealthCheck> GraphHealthCheckFactoryUsingProviderWithILoggerFactory(string? schemaName = default) => sp =>
+        new GraphHealthCheck(
+            sp.GetRequiredService<IRequestExecutorProvider>(),
+            sp.GetRequiredService<ILoggerFactory>().CreateLogger<GraphHealthCheck>()
+        )
+        {
+            Schema = schemaName
+        };
 }

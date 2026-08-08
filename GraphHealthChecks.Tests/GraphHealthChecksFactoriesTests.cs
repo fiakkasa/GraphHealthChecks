@@ -98,6 +98,100 @@ public class GraphHealthChecksFactoriesTests
         Assert.Null((result as GraphHealthCheck)?.Schema);
     }
 
+    [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryUsingProviderWithNoLogger - Custom Schema")]
+    public void GraphHealthCheckFactoryUsingProviderWithNoLoggerCustomSchema()
+    {
+        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryUsingProviderWithNoLogger("schema")(
+            new ServiceCollection()
+                .AddGraphQLServer()
+                .AddQueryType<Query>()
+                .Services
+                .BuildServiceProvider()
+        );
+
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
+        Assert.Equal("schema", (result as GraphHealthCheck)?.Schema);
+    }
+
+    [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryUsingProviderWithNoLogger - Default Schema")]
+    public void GraphHealthCheckFactoryUsingProviderWithNoLoggerDefaultSchema()
+    {
+        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryUsingProviderWithNoLogger()(
+            new ServiceCollection()
+                .AddGraphQLServer()
+                .AddQueryType<Query>()
+                .Services
+                .BuildServiceProvider()
+        );
+
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
+        Assert.Null((result as GraphHealthCheck)?.Schema);
+    }
+
+    [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryUsingProviderWithILogger - Custom Schema")]
+    public void GraphHealthCheckFactoryUsingProviderWithILoggerCustomSchema()
+    {
+        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryUsingProviderWithILogger("schema")(
+            new ServiceCollection()
+                .AddLogging()
+                .AddGraphQLServer()
+                .AddQueryType<Query>()
+                .Services
+                .BuildServiceProvider()
+        );
+
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
+        Assert.Equal("schema", (result as GraphHealthCheck)?.Schema);
+    }
+
+    [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryUsingProviderWithILogger - Default Schema")]
+    public void GraphHealthCheckFactoryUsingProviderWithILoggerDefaultSchema()
+    {
+        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryUsingProviderWithILogger()(
+            new ServiceCollection()
+                .AddLogging()
+                .AddGraphQLServer()
+                .AddQueryType<Query>()
+                .Services
+                .BuildServiceProvider()
+        );
+
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
+        Assert.Null((result as GraphHealthCheck)?.Schema);
+    }
+
+    [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryUsingProviderWithLoggerFn - Custom Schema")]
+    public void GraphHealthCheckFactoryUsingProviderWithLoggerFnCustomSchema()
+    {
+        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryUsingProviderWithILoggerFactory("schema")(
+            new ServiceCollection()
+                .AddLogging()
+                .AddGraphQLServer()
+                .AddQueryType<Query>()
+                .Services
+                .BuildServiceProvider()
+        );
+
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
+        Assert.Equal("schema", (result as GraphHealthCheck)?.Schema);
+    }
+
+    [Fact(DisplayName = "GraphHealthChecksFactories - GraphHealthCheckFactoryUsingProviderWithLoggerFn - Default Schema")]
+    public void GraphHealthCheckFactoryUsingProviderWithLoggerFnDefaultSchema()
+    {
+        var result = GraphHealthChecksFactories.GraphHealthCheckFactoryUsingProviderWithILoggerFactory()(
+            new ServiceCollection()
+                .AddLogging()
+                .AddGraphQLServer()
+                .AddQueryType<Query>()
+                .Services
+                .BuildServiceProvider()
+        );
+
+        Assert.IsType<GraphHealthCheck>(result, exactMatch: false);
+        Assert.Null((result as GraphHealthCheck)?.Schema);
+    }
+
     public class Query
     {
         public string Name => "Hello";

@@ -15,9 +15,11 @@ public class GraphHealthExtensionsTests
         "health5",
         "health6"
     ];
+    private static readonly string[] _defaultHealthNames = ["Graph Health"];
+    private static readonly string[] _customHealthNames = ["Graph"];
 
     [Fact(DisplayName = "AddGraphHealth - Multiple Instances - Separate Names and Schemas")]
-    public void MultipleInstancesSeparateNamesAndSchemas()
+    public void AddGraphHealthMultipleInstancesSeparateNamesAndSchemas()
     {
         var options =
             new ServiceCollection()
@@ -44,7 +46,7 @@ public class GraphHealthExtensionsTests
     }
 
     [Fact(DisplayName = "AddGraphHealth - Multiple Instances - Separate Names and Same Schema")]
-    public void MultipleInstancesSeparateNamesAndSameSchema()
+    public void AddGraphHealthMultipleInstancesSeparateNamesAndSameSchema()
     {
         var options =
             new ServiceCollection()
@@ -71,7 +73,7 @@ public class GraphHealthExtensionsTests
     }
 
     [Fact(DisplayName = "AddGraphHealth - Multiple Instances - Separate Names and Same Schema (Default)")]
-    public void MultipleInstancesSeparateNamesAndSameSchemaDefault()
+    public void AddGraphHealthMultipleInstancesSeparateNamesAndSameSchemaDefault()
     {
         var options =
             new ServiceCollection()
@@ -98,7 +100,7 @@ public class GraphHealthExtensionsTests
     }
 
     [Fact(DisplayName = "AddGraphHealth - Multiple Instances - Same Name and Schema (Default)")]
-    public void MultipleInstancesSameNameAndSchema()
+    public void AddGraphHealthMultipleInstancesSameNameAndSchema()
     {
         var options =
             new ServiceCollection()
@@ -125,7 +127,7 @@ public class GraphHealthExtensionsTests
     }
 
     [Fact(DisplayName = "AddGraphHealth - Multiple Instances - Same Name (Default) and Schema (Default)")]
-    public void MultipleInstancesSameNameDefaultAndSchemaDefault()
+    public void AddGraphHealthMultipleInstancesSameNameDefaultAndSchemaDefault()
     {
         var options =
             new ServiceCollection()
@@ -146,7 +148,7 @@ public class GraphHealthExtensionsTests
             options.Registrations.Select(x => x.Name),
             n =>
             {
-                if (n != "Graph Health") throw new Exception("Does not match");
+                if (n != _defaultHealthNames[0]) throw new Exception("Does not match");
             }
         );
     }
@@ -165,7 +167,7 @@ public class GraphHealthExtensionsTests
 
         Assert.Equal(
             options.Registrations.Count,
-            new[] { "Graph Health" }
+            _defaultHealthNames
                 .Intersect(options.Registrations.Select(x => x.Name))
                 .Distinct()
                 .Count()
@@ -178,7 +180,7 @@ public class GraphHealthExtensionsTests
         var options =
             new ServiceCollection()
                 .AddHealthChecks()
-                .AddGraphHealthWithNoLogger("Graph")
+                .AddGraphHealthWithNoLogger(_customHealthNames[0])
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -186,7 +188,7 @@ public class GraphHealthExtensionsTests
 
         Assert.Equal(
             options.Registrations.Count,
-            new[] { "Graph" }
+            _customHealthNames
                 .Intersect(options.Registrations.Select(x => x.Name))
                 .Distinct()
                 .Count()
@@ -208,7 +210,7 @@ public class GraphHealthExtensionsTests
 
         Assert.Equal(
             options.Registrations.Count,
-            new[] { "Graph Health" }
+            _defaultHealthNames
                 .Intersect(options.Registrations.Select(x => x.Name))
                 .Distinct()
                 .Count()
@@ -222,7 +224,7 @@ public class GraphHealthExtensionsTests
             new ServiceCollection()
                 .AddLogging()
                 .AddHealthChecks()
-                .AddGraphHealthWithILogger("Graph")
+                .AddGraphHealthWithILogger(_customHealthNames[0])
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -230,7 +232,7 @@ public class GraphHealthExtensionsTests
 
         Assert.Equal(
             options.Registrations.Count,
-            new[] { "Graph" }
+            _customHealthNames
                 .Intersect(options.Registrations.Select(x => x.Name))
                 .Distinct()
                 .Count()
@@ -252,7 +254,7 @@ public class GraphHealthExtensionsTests
 
         Assert.Equal(
             options.Registrations.Count,
-            new[] { "Graph Health" }
+            _defaultHealthNames
                 .Intersect(options.Registrations.Select(x => x.Name))
                 .Distinct()
                 .Count()
@@ -266,7 +268,7 @@ public class GraphHealthExtensionsTests
             new ServiceCollection()
                 .AddLogging()
                 .AddHealthChecks()
-                .AddGraphHealthWithILoggerFactory("Graph")
+                .AddGraphHealthWithILoggerFactory(_customHealthNames[0])
                 .Services
                 .BuildServiceProvider()
                 .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
@@ -274,7 +276,272 @@ public class GraphHealthExtensionsTests
 
         Assert.Equal(
             options.Registrations.Count,
-            new[] { "Graph" }
+            _customHealthNames
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProvider - Multiple Instances - Separate Names and Schemas")]
+    public void AddGraphHealthUsingProviderMultipleInstancesSeparateNamesAndSchemas()
+    {
+        var options =
+            new ServiceCollection()
+                .AddLogging()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithNoLogger("health1", "schema1")
+                .AddGraphHealthUsingProviderWithNoLogger("health2", "schema2")
+                .AddGraphHealthUsingProviderWithILogger("health3", "schema3")
+                .AddGraphHealthUsingProviderWithILogger("health4", "schema4")
+                .AddGraphHealthUsingProviderWithILoggerFactory("health5", "schema5")
+                .AddGraphHealthUsingProviderWithILoggerFactory("health6", "schema6")
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.Equal(
+            options.Registrations.Count,
+            _schemas
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProvider - Multiple Instances - Separate Names and Same Schema")]
+    public void AddGraphHealthUsingProviderMultipleInstancesSeparateNamesAndSameSchema()
+    {
+        var options =
+            new ServiceCollection()
+                .AddLogging()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithNoLogger("health1", "schema")
+                .AddGraphHealthUsingProviderWithNoLogger("health2", "schema")
+                .AddGraphHealthUsingProviderWithILogger("health3", "schema")
+                .AddGraphHealthUsingProviderWithILogger("health4", "schema")
+                .AddGraphHealthUsingProviderWithILoggerFactory("health5", "schema")
+                .AddGraphHealthUsingProviderWithILoggerFactory("health6", "schema")
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.Equal(
+            options.Registrations.Count,
+            _schemas
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProvider - Multiple Instances - Separate Names and Same Schema (Default)")]
+    public void AddGraphHealthUsingProviderMultipleInstancesSeparateNamesAndSameSchemaDefault()
+    {
+        var options =
+            new ServiceCollection()
+                .AddLogging()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithNoLogger("health1")
+                .AddGraphHealthUsingProviderWithNoLogger("health2")
+                .AddGraphHealthUsingProviderWithILogger("health3")
+                .AddGraphHealthUsingProviderWithILogger("health4")
+                .AddGraphHealthUsingProviderWithILoggerFactory("health5")
+                .AddGraphHealthUsingProviderWithILoggerFactory("health6")
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.Equal(
+            options.Registrations.Count,
+            _schemas
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProvider - Multiple Instances - Same Name and Schema (Default)")]
+    public void AddGraphHealthUsingProviderMultipleInstancesSameNameAndSchema()
+    {
+        var options =
+            new ServiceCollection()
+                .AddLogging()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithNoLogger("health")
+                .AddGraphHealthUsingProviderWithNoLogger("health")
+                .AddGraphHealthUsingProviderWithILogger("health")
+                .AddGraphHealthUsingProviderWithILogger("health")
+                .AddGraphHealthUsingProviderWithILoggerFactory("health")
+                .AddGraphHealthUsingProviderWithILoggerFactory("health")
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.All(
+            options.Registrations.Select(x => x.Name),
+            n =>
+            {
+                if (n != "health") throw new Exception("Does not match");
+            }
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProvider - Multiple Instances - Same Name (Default) and Schema (Default)")]
+    public void AddGraphHealthUsingProviderMultipleInstancesSameNameDefaultAndSchemaDefault()
+    {
+        var options =
+            new ServiceCollection()
+                .AddLogging()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithNoLogger()
+                .AddGraphHealthUsingProviderWithNoLogger()
+                .AddGraphHealthUsingProviderWithILogger()
+                .AddGraphHealthUsingProviderWithILogger()
+                .AddGraphHealthUsingProviderWithILoggerFactory()
+                .AddGraphHealthUsingProviderWithILoggerFactory()
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.All(
+            options.Registrations.Select(x => x.Name),
+            n =>
+            {
+                if (n != _defaultHealthNames[0]) throw new Exception("Does not match");
+            }
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProviderWithNoLogger - Default Health Name")]
+    public void AddGraphHealthUsingProviderWithNoLoggerDefaultHealthName()
+    {
+        var options =
+            new ServiceCollection()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithNoLogger()
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.Equal(
+            options.Registrations.Count,
+            _defaultHealthNames
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProviderWithNoLogger - Custom Health Name")]
+    public void AddGraphHealthUsingProviderWithNoLoggerCustomHealthName()
+    {
+        var options =
+            new ServiceCollection()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithNoLogger(_customHealthNames[0])
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.Equal(
+            options.Registrations.Count,
+            _customHealthNames
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProviderWithILogger - Default Health Name")]
+    public void AddGraphHealthUsingProviderWithILoggerDefaultHealthName()
+    {
+        var options =
+            new ServiceCollection()
+                .AddLogging()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithILogger()
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.Equal(
+            options.Registrations.Count,
+            _defaultHealthNames
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProviderWithILogger - Custom Health Name")]
+    public void AddGraphHealthUsingProviderWithILoggerCustomHealthName()
+    {
+        var options =
+            new ServiceCollection()
+                .AddLogging()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithILogger(_customHealthNames[0])
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.Equal(
+            options.Registrations.Count,
+            _customHealthNames
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProviderWithILoggerFactory - Default Health Name")]
+    public void AddGraphHealthUsingProviderWithILoggerFactoryDefaultHealthName()
+    {
+        var options =
+            new ServiceCollection()
+                .AddLogging()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithILoggerFactory()
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.Equal(
+            options.Registrations.Count,
+            _defaultHealthNames
+                .Intersect(options.Registrations.Select(x => x.Name))
+                .Distinct()
+                .Count()
+        );
+    }
+
+    [Fact(DisplayName = "AddGraphHealthUsingProviderWithILoggerFactory - Custom Health Name")]
+    public void AddGraphHealthUsingProviderWithILoggerFactoryCustomHealthName()
+    {
+        var options =
+            new ServiceCollection()
+                .AddLogging()
+                .AddHealthChecks()
+                .AddGraphHealthUsingProviderWithILoggerFactory(_customHealthNames[0])
+                .Services
+                .BuildServiceProvider()
+                .GetRequiredService<IOptions<HealthCheckServiceOptions>>()
+                .Value;
+
+        Assert.Equal(
+            options.Registrations.Count,
+            _customHealthNames
                 .Intersect(options.Registrations.Select(x => x.Name))
                 .Distinct()
                 .Count()
