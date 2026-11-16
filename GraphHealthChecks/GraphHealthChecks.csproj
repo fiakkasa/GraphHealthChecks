@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>net8.0;net9.0;net10.0;net11.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>$(MSBuildProjectName)</PackageId>
-    <Version>6.1.0</Version>
+    <Version>7.0.0</Version>
     <Authors>Adamos Fiakkas</Authors>
     <Description>Graph Health Checks for HotChocolate</Description>
     <Copyright>Adamos Fiakkas</Copyright>
@@ -22,8 +22,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.10"/>
-    <PackageReference Include="HotChocolate.Types" Version="16.6.0"/>
+    <PackageReference Include="HotChocolate.Types" Version="16.7.5"/>
+  </ItemGroup>
+
+  <!-- note: target explicitly -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net11.0'">
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="11.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0' Or '$(TargetFramework)' == 'net10.0'">
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.15" />
   </ItemGroup>
 
   <ItemGroup>
